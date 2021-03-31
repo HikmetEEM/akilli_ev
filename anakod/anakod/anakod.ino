@@ -14,12 +14,61 @@ DHT dht(DHTPIN, DHTTYPE);
 BlynkTimer timer;
 
 
+void veriOku() {
+  isinem();
+  yangin();
+  deprem();
+  toprak();
+  mq2();
+  su();
+}
+void yangin() {
+ int yandim=(1023 - getAnalog(0));
+  Blynk.virtualWrite(V4, yandim);
+  if (yandim > 200) {
+    Blynk.notify("yangın var!");
+  }
+}
+
+void mq2() {
+int x= getAnalog(5);
+
+  Blynk.virtualWrite(V9, x);
+
+   if (x > 120) {
+    Blynk.notify("gaz kacağı var!");
+  }
+}
+
+void deprem() {
+  int deger = getAnalog(4);
+deger = 10-map(deger, 0, 1023, 0, 10);
+  Blynk.virtualWrite(V2, deger );
+  if (deger > 5) {
+    Blynk.notify("deprem var!");
+  }
+}
+
+void toprak() {
+  int y= 1023-getAnalog(7);
+  Blynk.virtualWrite(V0,y);
+  if (y<400) {
+    Blynk.notify("su kalmadı toprağı sula!");
+  }
+}
+void su() {
+  int z=1024-getAnalog(6);
+  Blynk.virtualWrite(V3,z);
+  if (z > 400) {
+    Blynk.notify("su bastı!");
+  }
+}
 
 void isinem()
 {
   float h = dht.readHumidity();
   float t = dht.readTemperature(); // or dht.readTemperature(true) for Fahrenheit
- 
+
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
@@ -29,7 +78,7 @@ void isinem()
   Blynk.virtualWrite(V5, t);
   Blynk.virtualWrite(V6, h);
 }
- 
+
 void setup()
 {
   Serial.begin(115200);
@@ -39,13 +88,12 @@ void setup()
 
   Blynk.begin(auth, ssid, pass);
   dht.begin();
-  timer.setInterval(1000L, isinem);
+  timer.setInterval(1000L, veriOku);
 }
 
 void loop()
 {
-  
-  
+
   Blynk.run();
   timer.run();
 }
