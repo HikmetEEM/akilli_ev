@@ -23,7 +23,7 @@ void veriOku() {
   su();
 }
 void yangin() {
- int yandim=(1023 - getAnalog(0));
+ int yandim=(1023 - getAnalog(3));
   Blynk.virtualWrite(V4, yandim);
   if (yandim > 200) {
     Blynk.notify("yangın var!");
@@ -31,7 +31,7 @@ void yangin() {
 }
 
 void mq2() {
-int x= getAnalog(5);
+int x= (getAnalog(0));
 
   Blynk.virtualWrite(V9, x);
 
@@ -50,14 +50,14 @@ deger = 10-map(deger, 0, 1023, 0, 10);
 }
 
 void toprak() {
-  int y= 1023-getAnalog(7);
+  int y= 1023-getAnalog(1);
   Blynk.virtualWrite(V0,y);
   if (y<400) {
     Blynk.notify("su kalmadı toprağı sula!");
   }
 }
 void su() {
-  int z=1024-getAnalog(6);
+  int z=1024-getAnalog(2);
   Blynk.virtualWrite(V3,z);
   if (z > 600) {
     Blynk.notify("su bastı!");
